@@ -1,6 +1,6 @@
 <?php
+require_once ('header.php');
 require_once ('navigation.php');
-echo '<link rel = "stylesheet" href = "/css/posts.css" >';
 echo '<h2 style="text-align:center">User Profile Card</h2>
 <div class="card">
   <img src="https://html5css.ru/w3images/team2.jpg" alt="John" style="width:100%">
@@ -15,3 +15,5 @@ echo '<h2 style="text-align:center">User Profile Card</h2>
  </div>
  <p><button>Contact</button></p>
 </div>';
+require_once ('footer.php');
+
