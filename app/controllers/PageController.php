@@ -6,6 +6,7 @@
  * @author sergey
  */
 class PageController extends ViewController{
+    private $table='posts';
     public function loginAction($params=" "){
 	      $this->generateviewAction('login');
     }
@@ -16,8 +17,14 @@ class PageController extends ViewController{
         $this->generateviewAction('profile');
     }
     public function postsAction(){
-        $post=new Savepost();
-        $result=$post->all_posts();
+        $test=new ActiveRecord();
+        $test->init();
+        $test->select(' * ');
+        $test->from($this->table);
+        $res=$test->getSql();
+        $result=$test->exec($res);
+
+
         $this->generateviewAction('posts',$result);
     }
 }
