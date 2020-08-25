@@ -5,5 +5,6 @@
         public function generateviewAction($view = " ", $id = " ", $template = " ")
         {
             include_once ROOT . "/app/views/$view" . '.php';
+
         }
     }

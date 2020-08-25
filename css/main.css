@@ -135,6 +135,11 @@ button {
     text-transform: uppercase;
 }
 
+#ul_login{
+    list-style: none;
+}
+
+
 /********************** добавляем форме адаптивность **********************/
 @media (max-width: 600px) {
     .form-wrap {margin: 20px auto; max-width: 550px; width:100%;}
