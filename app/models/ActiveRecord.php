@@ -29,20 +29,49 @@ class ActiveRecord{
     }
     public function save()
     {
-        $bindParamNames = [];
-        $keys=[];
-        foreach($this->properties as $field=>$value)
-        {
-            $keys[]=$field;
-            $bindParamNames[] = "'". $value.'\'';
+        try {
+            $bindParamNames = [];
+            $keys=[];
+            foreach($this->properties as $field=>$value)
+            {
+                $keys[]=$field;
+                $bindParamNames[] = "'". $value.'\'';
+            }
+            $fields = implode(', ',$keys);
+            $bindParamNamesString = implode(', ', $bindParamNames);
+            $pdo=$this->connect;
+            $query="INSERT INTO " . $this->table . " (" . $fields. ") VALUES (" . $bindParamNamesString .  ")";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+        }catch (PDOException $e){
+            echo 'Пользователь с таким логином или email уже зарегистрирован!';
+            echo 'Для перехода на страницу регистрации нажмите '.'<a href="/">сюда</a>';
+            die();
+
         }
-        $fields = implode(', ',$keys);
-        $bindParamNamesString = implode(', ', $bindParamNames);
-        $pdo=$this->connect;
-        $query="INSERT INTO " . $this->table . " (" . $fields. ") VALUES (" . $bindParamNamesString .  ")";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
+
     }
+
+    public function update($id="id",$val=" ")
+    {
+        try {
+            $bindParamNames = [];
+            $keys=[];
+            foreach($this->properties as $field=>$value)
+            {
+                $keys[]=$field;
+                $bindParamNames[] = $field."='". $value.'\'';
+            }
+            $bindParamNamesString = implode(', ', $bindParamNames);
+            $pdo=$this->connect;
+            $query="UPDATE " . $this->table . " SET " . $bindParamNamesString .  ' WHERE '.$id.'='.$val;
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+        }catch (PDOException $e){
+            echo 'Пользователь с таким логином или email уже зарегистрирован!';
+        }
+    }
+
     public function select($select){
         $this->select=' SELECT '.$select;
     }

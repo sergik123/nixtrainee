@@ -14,10 +14,19 @@ class PageController extends ViewController{
         $this->generateviewAction('registration');
     }
     public function profileAction($params=" "){
-        $this->generateviewAction('profile');
+        $id=strip_tags($_COOKIE['id']);
+        $test=new ActiveRecord();
+        $test->init();
+        $test->select(' * ');
+        $test->from('reg_user');
+        $test->where('id','\''.$id.'\'');
+        $res=$test->getSql();
+        $result=$test->exec($res);
+        $this->generateviewAction('profile',$result);
     }
     public function clearcookieAction(){
         setcookie("login", null, -1, '/');
+        setcookie("id", null, -1, '/');
         header("Location: ".'/');
     }
     public function postsAction(){
@@ -37,12 +46,30 @@ class PageController extends ViewController{
         $test->email=strip_tags($_POST['email']);
         $test->password=strip_tags($_POST['password']);
         $test->country=strip_tags($_POST['country']);
-        $test->avatar='';
+        $test->avatar=$_FILES['avatarka']['name'];
+        move_uploaded_file($_FILES['avatarka']['tmp_name'],ROOT.'/app/img/'.$_FILES['avatarka']['name']);
         $test->save();
-        setcookie("login",ucfirst($_POST['name']),0,'/');
-        $this->generateviewAction('success');
-    }
 
+        $this->generateviewAction('login');
+    }
+    public function regupdateAction(){
+        $test=new ActiveRecord();
+        $test->init();
+        $test->table='reg_user';
+        $test->name_user=strip_tags($_POST['name']);
+        $test->email=strip_tags($_POST['email']);
+        $test->password=strip_tags($_POST['password']);
+        $test->country=strip_tags($_POST['country']);
+
+        if($_FILES['avatarka']['name']!=""){
+            move_uploaded_file($_FILES['avatarka']['tmp_name'],ROOT.'/app/img/'.$_FILES['avatarka']['name']);
+            $test->avatar=$_FILES['avatarka']['name'];
+        }
+
+        $test->update('id',$_COOKIE['id']);
+
+        $this->profileAction();
+    }
     public function authAction(){
         $email=strip_tags($_POST['email']);
         $password=strip_tags($_POST['password']);
@@ -60,9 +87,9 @@ class PageController extends ViewController{
             $this->generateviewAction('login',$msg);
         }else{
             setcookie("login",ucfirst(strip_tags($result[0]['name_user'])),0,'/');
+            setcookie("id",ucfirst(strip_tags($result[0]['id'])),0,'/');
             $this->generateviewAction('success');
-
         }
-
     }
+
 }

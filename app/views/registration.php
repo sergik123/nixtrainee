@@ -4,7 +4,7 @@ echo '<div class="form-wrap">
   <div class="profile"><img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
     <h1>Регистрация</h1>
   </div>
-  <form method="post" action="/page/reg">
+  <form method="post"  enctype="multipart/form-data" action="/page/reg">
     <div>
       <label for="name">Имя</label>
       <input type="text" name="name" required>
