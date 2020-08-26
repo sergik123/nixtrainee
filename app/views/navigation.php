@@ -17,7 +17,9 @@
             <a class="navbar-brand" href="/page/login">Логин</a>
             <a class="navbar-brand" href="/page/registration">Регистрация</a>
             <a class="navbar-brand" href="/page/posts">Список постов</a>
+            <?php if(isset($_COOKIE['login'])):?>
             <a class="navbar-brand" href="/page/profile">Профиль</a>
+            <?php endif; ?>
 
             <ul style="float: right; font-size: 14px; margin-top: 10px; " id="ul_login">
                 <li><a href="/page/login" style="color: #9d9d9d; margin-right: 10px;"><span class="glyphicon"></span><?php if(isset($_COOKIE['login'])){echo $_COOKIE['login'];}else{echo 'Вхід';}?></a>

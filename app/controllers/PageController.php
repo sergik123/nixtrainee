@@ -18,8 +18,7 @@ class PageController extends ViewController{
     }
     public function clearcookieAction(){
         setcookie("login", null, -1, '/');
-        header("Location: ".$_SERVER['HTTP_REFERER']);
-        $this->generateviewAction('login');
+        header("Location: ".'/');
     }
     public function postsAction(){
         $test=new ActiveRecord();
@@ -42,5 +41,28 @@ class PageController extends ViewController{
         $test->save();
         setcookie("login",ucfirst($_POST['name']),0,'/');
         $this->generateviewAction('success');
+    }
+
+    public function authAction(){
+        $email=strip_tags($_POST['email']);
+        $password=strip_tags($_POST['password']);
+        $test=new ActiveRecord();
+        $test->init();
+        $test->select(' * ');
+        $test->from('reg_user');
+        $test->where('email','\''.$email.'\'');
+        $test->where('password','\''.$password.'\'');
+        $res=$test->getSql();
+        $result=$test->exec($res);
+
+        if($result==null){
+            $msg='Такого пользователя не существует';
+            $this->generateviewAction('login',$msg);
+        }else{
+            setcookie("login",ucfirst(strip_tags($result[0]['name_user'])),0,'/');
+            $this->generateviewAction('success');
+
+        }
+
     }
 }
