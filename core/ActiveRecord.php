@@ -11,11 +11,9 @@ class ActiveRecord{
     public $table;
     public function __construct()
     {
-
-    }
-    public function init(){
         $this->link=new Connectdb;
-        $this->connect=$this->link->config();
+        $conf=$this->link->config();
+        $this->connect=new PDO('mysql:host='.$conf['host'].';dbname='.$conf['db'].'',$conf['user'],$conf['pass']);
     }
     public function __set($name, $value)
     {
@@ -45,7 +43,7 @@ class ActiveRecord{
             $stmt->execute();
         }catch (PDOException $e){
             echo 'Пользователь с таким логином или email уже зарегистрирован!';
-            echo 'Для перехода на страницу регистрации нажмите '.'<a href="/">сюда</a>';
+            echo 'Для перехода на страницу регистрации нажмите '. '<a href="/">сюда</a>';
             die();
 
         }

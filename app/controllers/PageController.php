@@ -15,8 +15,7 @@ class PageController extends ViewController{
     }
     public function profileAction($params=" "){
         $id=strip_tags($_COOKIE['id']);
-        $test=new ActiveRecord();
-        $test->init();
+        $test=new Profile();
         $test->select(' * ');
         $test->from('reg_user');
         $test->where('id','\''.$id.'\'');
@@ -30,8 +29,7 @@ class PageController extends ViewController{
         header("Location: ".'/');
     }
     public function postsAction(){
-        $test=new ActiveRecord();
-        $test->init();
+        $test=new Posts();
         $test->select(' * ');
         $test->from($this->table);
         $res=$test->getSql();
@@ -39,8 +37,7 @@ class PageController extends ViewController{
         $this->generateviewAction('posts',$result);
     }
     public function regAction(){
-        $test=new ActiveRecord();
-        $test->init();
+        $test=new Registration();
         $test->table='reg_user';
         $test->name_user=strip_tags($_POST['name']);
         $test->email=strip_tags($_POST['email']);
@@ -53,8 +50,7 @@ class PageController extends ViewController{
         $this->generateviewAction('login');
     }
     public function regupdateAction(){
-        $test=new ActiveRecord();
-        $test->init();
+        $test=new Profile();
         $test->table='reg_user';
         $test->name_user=strip_tags($_POST['name']);
         $test->email=strip_tags($_POST['email']);
@@ -73,8 +69,7 @@ class PageController extends ViewController{
     public function authAction(){
         $email=strip_tags($_POST['email']);
         $password=strip_tags($_POST['password']);
-        $test=new ActiveRecord();
-        $test->init();
+        $test=new Registration();
         $test->select(' * ');
         $test->from('reg_user');
         $test->where('email','\''.$email.'\'');
